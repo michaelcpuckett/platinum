@@ -7,9 +7,6 @@ export default class PlatinumForEach extends PlatinumShadow {
   get in() {
     return this.getAttribute('in')
   }
-  get attrs() {
-    return (this.getAttribute('attrs') || '').split(' ')
-  }
   handleChange({ detail: each }) {
     if (Array.isArray(each) && each.length) {
       console.log(each)
@@ -48,6 +45,7 @@ export default class PlatinumForEach extends PlatinumShadow {
     const templateContent = this.querySelector('template').content
     window.requestAnimationFrame(() => {
       const $store = this.getRootNode().host || this.parentElement
+      this.attrs = window.customElements.get($store.tagName.toLowerCase()).observedAttributes || []
       if (this.in) {
         {
           const each = $store[this.in]
