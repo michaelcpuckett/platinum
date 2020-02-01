@@ -10,6 +10,7 @@
         'done',
         'title',
         'className',
+        'hidedone',
         'hide'
       ]
     }
@@ -18,7 +19,10 @@
         todo
         ${done ? 'todo-done' : ''}
       `
-      this.hide = this.hasAttribute('hidedone') && done
+      this.hide = this.hidedone && done
+    }
+    set $hidedone(hidedone) {
+      this.hide = hidedone && this.done
     }
     constructor() {
       super({
@@ -57,7 +61,7 @@
     static get observedAttributes() {
       return [
         'items',
-        'showCleared'
+        'hidedone'
       ]
     }
     handleSubmit(event) {
@@ -65,7 +69,7 @@
       const formEl = event.currentTarget
       if (formEl.checkValidity()) {
         const inputEl = formEl.querySelector('input')
-        this.items = [...this.items, ({ id: Date.now(), label: inputEl.value })]
+        this.items = [...this.items, ({ id: Date.now(), title: inputEl.value })]
         inputEl.value = ''
       }
     }
@@ -76,29 +80,15 @@
             <input placeholder="Todo" required />
             <button>Add</button>
             <label>
-              Show Cleared
-              <input type="checkbox" oninput="this.getRootNode().host.showCleared = !this.getRootNode().host.showCleared">
+              Hide Done
+              <input type="checkbox" oninput="this.getRootNode().host.hidedone = !this.getRootNode().host.hidedone">
             </label>
-          </article>
             <ul>
-              <p-if condition="showCleared">
+              <p-for-each in="items" attrs="hidedone">
                 <template>
-                  <p-for-each in="items">
-                    <template>
-                      <x-todo></x-todo>
-                    </template>
-                  </p-for-each>
+                  <x-todo></x-todo>
                 </template>
-              </p-if>
-              <p-if not="showCleared">
-                <template>
-                  <p-for-each in="items">
-                    <template>
-                      <x-todo hidedone></x-todo>
-                    </template>
-                  </p-for-each>
-                </template>
-              </p-if>
+              </p-for-each>
             </ul>
           </form>
         `
