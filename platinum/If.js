@@ -38,6 +38,12 @@ export default class PlatinumIf extends HTMLElement {
           attrs.forEach(attr => node.removeAttribute(attr))
         }
       })
+      ;[...this.querySelectorAll([`[data-boolean-attr-${key}]`])].forEach(node => {
+        const attrs = node.getAttribute(`data-boolean-attr-${key}`).split(' ')
+        attrs.forEach(attr => {
+          Object.assign(node, { [attr]: value })
+        })
+      })
     })
   }
   toggle() {

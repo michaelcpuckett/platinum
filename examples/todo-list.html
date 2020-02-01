@@ -11,7 +11,8 @@
         'title',
         'className',
         'hidedone',
-        'hide'
+        'hide',
+        'editing'
       ]
     }
     set $done(done) {
@@ -23,6 +24,17 @@
     }
     set $hidedone(hidedone) {
       this.hide = hidedone && this.done
+    }
+    handleEditSubmit(event) {
+      event.preventDefault()
+      const formEl = event.currentTarget
+      const inputEl = formEl.querySelector('input')
+      this.title = inputEl.value
+      let $store = this.getRootNode().host
+      do {
+        $store = $store.getRootNode().host
+      } while ($store.tagName.toLowerCase().startsWith('p-')) 
+      $store.dispatchEvent(new CustomEvent('$update_editing', { detail: false }))
     }
     constructor() {
       super({
@@ -43,12 +55,28 @@
             <template>
               <article data-attr-className="class" data-attr-done="data-done">
                 <h2>
-                  <slot name="title"></slot>
+                  <p-if condition="editing">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.handleEditSubmit(event)">
+                        <input data-attr-title="value" />
+                        <button class="visually-hidden">Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing">
+                    <template>
+                      <slot name="title"></slot>
+                    </template>
+                  </p-if>
                 </h2>
-                <label>
-                  Done
-                  <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
-                </label>
+                <p-if not="editing">
+                  <template>
+                    <label>
+                      Done
+                      <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
+                    </label>
+                  </template>
+                </p-if>
               </article>
             </template>
           </p-if>
@@ -61,7 +89,8 @@
     static get observedAttributes() {
       return [
         'items',
-        'hidedone'
+        'hidedone',
+        'editing'
       ]
     }
     handleSubmit(event) {
@@ -81,10 +110,14 @@
             <button>Add</button>
             <label>
               Hide Done
-              <input type="checkbox" oninput="this.getRootNode().host.hidedone = !this.getRootNode().host.hidedone">
+              <input data-boolean-attr-done="checked" type="checkbox" oninput="this.getRootNode().host.hidedone = !this.getRootNode().host.hidedone">
+            </label>
+            <label>
+              Editing
+              <input data-boolean-attr-editing="checked" type="checkbox" oninput="this.getRootNode().host.editing = !this.getRootNode().host.editing">
             </label>
             <ul>
-              <p-for-each in="items" attrs="hidedone">
+              <p-for-each in="items">
                 <template>
                   <x-todo></x-todo>
                 </template>

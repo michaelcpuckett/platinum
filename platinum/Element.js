@@ -26,6 +26,9 @@ export default class PlatinumElement extends PlatinumShadow {
     const { observedAttributes } = this.constructor
     if (observedAttributes) {
       observedAttributes.forEach(key => {
+        this.addEventListener(`$update_${key}`, ({ detail: value }) => {
+          this[key] = value
+        })
         this.state[key] = this[key] || this.getAttribute(key) // getters / attrs
         Object.defineProperty(this, key, {
           get() {
@@ -61,6 +64,13 @@ export default class PlatinumElement extends PlatinumShadow {
         attrs.forEach(attr => node.removeAttribute(attr))
       }
     })
+
+    ;[...this.shadowRoot.querySelectorAll([`[data-boolean-attr-${key}]`])].forEach(node => {
+      const attrs = node.getAttribute(`data-boolean-attr-${key}`).split(' ')
+      attrs.forEach(attr => {
+        Object.assign(node, { [attr]: value })
+      })
+    })
   }
   $render() {
     const { observedAttributes } = this.constructor
@@ -74,6 +84,13 @@ export default class PlatinumElement extends PlatinumShadow {
           } else {
             attrs.forEach(attr => node.removeAttribute(attr))
           }
+        })
+        ;[...this.shadowRoot.querySelectorAll([`[data-boolean-attr-${key}]`])].forEach(node => {
+          const value = this[key]
+          const attrs = node.getAttribute(`data-boolean-attr-${key}`).split(' ')
+          attrs.forEach(attr => {
+            Object.assign(node, { [attr]: value })
+          })
         })
       })
     }
