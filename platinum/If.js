@@ -14,6 +14,9 @@ export default class PlatinumIf extends HTMLElement {
   get not() {
     return this.getAttribute('not')
   }
+  get equals() {
+    return this.getAttribute('equals')
+  }
   $render() {
     const $host = this.currentHost
     const attrs = window.customElements.get($host.tagName.toLowerCase()).observedAttributes || []
@@ -34,9 +37,15 @@ export default class PlatinumIf extends HTMLElement {
       })
     })
   }
+  evaluateCondition() {
+    return this.equals ? (this.currentHost[this.condition] === this.equals) : !!this.currentHost[this.condition]
+  }
+  evaluateNot() {
+    return this.equals ? (this.currentHost[this.not] !== this.equals) : !this.currentHost[this.not]
+  }
   toggle() {
     const showing = this.element.parentNode !== this.fragment
-    const show = this.currentHost && (this.condition ? this.currentHost[this.condition] : !this.currentHost[this.not])
+    const show = this.currentHost && (this.condition ? this.evaluateCondition() : this.evaluateNot())
     if (show && !showing) {
       this.append(this.element)
       this.$render()

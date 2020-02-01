@@ -1,0 +1,263 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module">
+  import PlatinumElement from '../platinum/index.js'
+
+  window.customElements.define('x-example', class XExample extends PlatinumElement {
+    static get observedAttributes() {
+      return [
+        'name',
+        'name_1',
+        'name_2',
+        'name_3',
+        'name_4',
+        'image',
+        'breed',
+        'type',
+        'sex',
+        'size',
+        'color',
+        'coatLength',
+        'description',
+        'location',
+        'editing'
+      ]
+    }
+    set $name(name) {
+      this.name_1 = name
+      this.name_2 = name
+      this.name_3 = name
+      this.name_4 = name
+    }
+    edit(key) {
+      this.editing = key
+    }
+    saveEdit(event) {
+      event.preventDefault()
+      const inputEl = event.currentTarget.querySelector('input')
+      const key = inputEl.getAttribute('name')
+      const value = inputEl.value
+      this[key] = value
+      this.editing = false
+    }
+    constructor() {
+      super({
+        template: /*html*/`
+          <style>
+            .container {
+              display: grid;
+              grid-auto-flow: column;
+              grid-template-columns: minmax(0, 1fr) 67%;
+            }
+            img {
+              max-width: 100%;
+            }
+          </style>
+          <article>
+            <h2>
+              <p-if condition="editing" equals="name">
+                <template>
+                  <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                    <input name="name" data-attr-name="value" />
+                    <button>Submit</button>
+                  </form>
+                </template>
+              </p-if>
+              <p-if not="editing" equals="name">
+                <template>
+                  <div>
+                    <slot name="name_1"></slot>
+                    <p-if condition="canEdit">
+                      <template>
+                        <button onclick="this.getRootNode().host.edit('name')">Edit</button>
+                      </template>
+                    </p-if>
+                  </div>
+                </template>
+              </p-if>
+            </h2>
+            <div class="container">
+              <p-if condition="image">
+                <template>
+                  <figure>
+                    <img data-attr-image="src" data-attr-name="alt" />
+                  </figure>
+                </template>
+              </p-if>
+              <dl>
+                <dt>
+                  Breed
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="breed">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="breed" data-attr-breed="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="breed">
+                    <template>
+                      <div>
+                        <slot name="breed"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('breed')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+                <dt>
+                  Type
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="type">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="type" data-attr-type="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="type">
+                    <template>
+                      <div>
+                        <slot name="type"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('type')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+                <dt>
+                  Sex
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="sex">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="sex" data-attr-sex="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="sex">
+                    <template>
+                      <div>
+                        <slot name="sex"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('sex')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+                <dt>
+                  Size
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="size">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="size" data-attr-size="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="size">
+                    <template>
+                      <div>
+                        <slot name="size"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('size')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+                <dt>
+                  Color
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="color">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="color" data-attr-color="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="color">
+                    <template>
+                      <div>
+                        <slot name="color"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('color')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+                <dt>
+                  Coat Length
+                </dt>
+                <dd>
+                  <p-if condition="editing" equals="coatLength">
+                    <template>
+                      <form onsubmit="return this.getRootNode().host.saveEdit(event)">
+                        <input name="coatLength" data-attr-coatLength="value" />
+                        <button>Submit</button>
+                      </form>
+                    </template>
+                  </p-if>
+                  <p-if not="editing" equals="coatLength">
+                    <template>
+                      <div>
+                        <slot name="coatLength"></slot>
+                        <p-if condition="canEdit">
+                          <template>
+                            <button onclick="this.getRootNode().host.edit('coatLength')">Edit</button>
+                          </template>
+                        </p-if>
+                      </div>
+                    </template>
+                  </p-if>
+                </dd>
+              </dl>
+            </div>
+            <h3>More about <slot name="name_2"></slot></h3>
+            <p><slot></slot></p>
+          </article>
+        `
+      })
+      this.canEdit = true
+    }
+  })
+</script>
+<x-example
+  name="Rylai"
+  image="rylai.jpg"
+  breed="Alaskan Malamute"
+  type="Senior"
+  sex="Female"
+  size="Large"
+  color="Brown &amp; White"
+  coatLength="Medium">
+    A large dog with a heart of gold.
+    Extremely good with people of all ages and even other pets
+    (friends with all the cats in the shelter).
+    She is very active and loves walks/hikes.
+    This dog sheds a lot so we hope you have a good vacuum cleaner.
+</x-example>
