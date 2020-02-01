@@ -7,10 +7,11 @@
     static get observedAttributes() {
       return ['items']
     }
-    handleSubmit(e) {
-      e.preventDefault()
-      if (e.currentTarget.checkValidity()) {
-        const inputEl = e.currentTarget.querySelector('input')
+    handleSubmit(event) {
+      event.preventDefault()
+      const formEl = event.currentTarget
+      if (formEl.checkValidity()) {
+        const inputEl = formEl.querySelector('input')
         this.items = [...this.items, ({ id: Date.now(), label: inputEl.value })]
         inputEl.value = ''
       }
