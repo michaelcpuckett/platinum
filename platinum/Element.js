@@ -41,6 +41,13 @@ export default class PlatinumElement extends PlatinumShadow {
       })
     }
   }
+  $getClosest() {
+    let $store = this.getRootNode().host
+    do {
+      $store = $store.getRootNode().host
+    } while ($store.tagName.toLowerCase().startsWith('p-'))
+    return $store
+  }
   attributeChangedCallback(key, prev, value) {
     window.requestAnimationFrame(() => {
       this[key] = value

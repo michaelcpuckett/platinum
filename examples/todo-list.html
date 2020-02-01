@@ -30,11 +30,7 @@
       const formEl = event.currentTarget
       const inputEl = formEl.querySelector('input')
       this.title = inputEl.value
-      let $store = this.getRootNode().host
-      do {
-        $store = $store.getRootNode().host
-      } while ($store.tagName.toLowerCase().startsWith('p-')) 
-      $store.dispatchEvent(new CustomEvent('$update_editing', { detail: false }))
+      this.editing = false
     }
     constructor() {
       super({
@@ -71,10 +67,15 @@
                 </h2>
                 <p-if not="editing">
                   <template>
-                    <label>
-                      Done
-                      <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
-                    </label>
+                    <fieldset>
+                      <button type="button" onclick="this.getRootNode().host.editing = !this.getRootNode().host.editing">
+                        Edit
+                      </button>
+                      <label>
+                        Done
+                        <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done" />
+                      </label>
+                    </fieldset>
                   </template>
                 </p-if>
               </article>
@@ -89,8 +90,7 @@
     static get observedAttributes() {
       return [
         'items',
-        'hidedone',
-        'editing'
+        'hidedone'
       ]
     }
     handleSubmit(event) {
@@ -98,7 +98,7 @@
       const formEl = event.currentTarget
       if (formEl.checkValidity()) {
         const inputEl = formEl.querySelector('input')
-        this.items = [...this.items, ({ id: Date.now(), title: inputEl.value })]
+        this.items = [...this.items, { id: Date.now(), title: inputEl.value }]
         inputEl.value = ''
       }
     }
@@ -111,10 +111,6 @@
             <label>
               Hide Done
               <input data-boolean-attr-done="checked" type="checkbox" oninput="this.getRootNode().host.hidedone = !this.getRootNode().host.hidedone">
-            </label>
-            <label>
-              Editing
-              <input data-boolean-attr-editing="checked" type="checkbox" oninput="this.getRootNode().host.editing = !this.getRootNode().host.editing">
             </label>
             <ul>
               <p-for-each in="items">

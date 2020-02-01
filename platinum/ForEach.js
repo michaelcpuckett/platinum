@@ -11,9 +11,9 @@ export default class PlatinumForEach extends PlatinumShadow {
     if (Array.isArray(each) && each.length) {
       ;[...this.shadowRoot.children].forEach(node => node.remove())
       each.map(data => {
-        data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, this.getRootNode().host[attr] ])) }
+        data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, this.$store[attr] ])) }
         const shadowEl = window.document.createElement('p-shadow')
-        const clone = templateContent.cloneNode(true).firstElementChild
+        const clone = this.templateContent.cloneNode(true).firstElementChild
         if (clone.tagName.includes('-')) {
           Object.assign(clone, data)
         }
@@ -46,19 +46,19 @@ export default class PlatinumForEach extends PlatinumShadow {
   }
   connectedCallback() {
     this.style.display = 'contents'
-    const templateContent = this.querySelector('template').content
+    this.templateContent = this.querySelector('template').content
     window.requestAnimationFrame(() => {
-      const $store = this.getRootNode().host || this.parentElement
-      this.attrs = window.customElements.get($store.tagName.toLowerCase()).observedAttributes || []
+      this.$store = this.getRootNode().host || this.parentElement
+      this.attrs = window.customElements.get(this.$store.tagName.toLowerCase()).observedAttributes || []
       if (this.in) {
         {
-          const each = $store[this.in]
+          const each = this.$store[this.in]
           if (Array.isArray(each) && each.length) {
             ;[...this.shadowRoot.children].forEach(node => node.remove())
             each.map(data => {
-              data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, $store[attr] ])) }
+              data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, this.$store[attr] ])) }
               const shadowEl = window.document.createElement('p-shadow')
-              const clone = templateContent.cloneNode(true).firstElementChild
+              const clone = this.templateContent.cloneNode(true).firstElementChild
               if (clone.tagName.includes('-')) {
                 Object.assign(clone, data)
               }
@@ -90,9 +90,9 @@ export default class PlatinumForEach extends PlatinumShadow {
           }
         }
         // TODO remove event listeners
-        $store.addEventListener(`$change_${this.in}`, this.handleChange)
+        this.$store.addEventListener(`$change_${this.in}`, event => this.handleChange(event))
         this.attrs.forEach(attr => {
-          $store.addEventListener(`$change_${attr}`, ({ detail: value }) => {
+          this.$store.addEventListener(`$change_${attr}`, ({ detail: value }) => {
             ;[...this.shadowRoot.children].forEach((parent) => {
               const node = parent.shadowRoot.firstElementChild
               if (node.tagName.includes('-')) {
