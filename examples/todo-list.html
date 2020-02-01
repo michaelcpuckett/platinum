@@ -33,15 +33,19 @@
               text-decoration: line-through;
             }
           </style>
-          <article data-attr-className="class" data-attr-done="data-done">
-            <h2>
-              <slot name="title"></slot>
-            </h2>
-            <label>
-              Done
-              <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
-            </label>
-          </article>
+          <p-if not="done">
+            <template>
+              <article data-attr-className="class" data-attr-done="data-done">
+                <h2>
+                  <slot name="title"></slot>
+                </h2>
+                <label>
+                  Done
+                  <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
+                </label>
+              </article>
+            </template>
+          </p-if>
         `
       })
     }
@@ -77,11 +81,7 @@
             <ul>
               <p-for-each in="items">
                 <template>
-                  <p-if not="done">
-                    <template>
-                      <x-todo></x-todo>
-                    </template>
-                  </p-if>
+                  <x-todo></x-todo>
                 </template>
               </p-for-each>
             </ul>

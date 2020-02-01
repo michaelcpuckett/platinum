@@ -1,6 +1,4 @@
-import PlatinumShadow from './Shadow.js'
-
-export default class PlatinumIf extends PlatinumShadow {
+export default class PlatinumIf extends HTMLElement {
   constructor() {
     super()
     this.style.display = 'contents'
@@ -20,19 +18,19 @@ export default class PlatinumIf extends PlatinumShadow {
     const $host = this.currentHost
     const attrs = window.customElements.get($host.tagName.toLowerCase()).observedAttributes || []
     attrs.map(attr => [attr, $host[attr]]).forEach(([key, value]) => {
-      if (this.element.tagName.includes('-')) {
-        Object.assign(this.element, { [key]: value })
-      }
-      ;[...this.querySelectorAll([`[slot="${key}"]`])].forEach(node => {
-        node.remove()
-      })
-      if (value && (typeof value !== 'string' || value.length)) {
-        const element = window.document.createElement('data')
-        element.setAttribute('slot', key)
-        this.append(element)
-        this.querySelector(`[slot="${key}"]`).innerHTML = value
-      }
-      ;[...this.shadowRoot.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
+      // if (this.element.tagName.includes('-')) {
+      //   Object.assign(this.element, { [key]: value })
+      // }
+      // ;[...this.querySelectorAll([`[slot="${key}"]`])].forEach(node => {
+      //   node.remove()
+      // })
+      // if (value && (typeof value !== 'string' || value.length)) {
+      //   const element = window.document.createElement('data')
+      //   element.setAttribute('slot', key)
+      //   this.append(element)
+      //   this.querySelector(`[slot="${key}"]`).innerHTML = value
+      // }
+      ;[...this.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
         const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
         if (value !== undefined && value !== null) {
           attrs.forEach(attr => node.setAttribute(attr, value))
@@ -46,7 +44,7 @@ export default class PlatinumIf extends PlatinumShadow {
     const showing = this.element.parentNode !== this.fragment
     const show = this.currentHost && (this.condition ? this.currentHost[this.condition] : !this.currentHost[this.not])
     if (show && !showing) {
-      this.shadowRoot.append(this.element)
+      this.append(this.element)
       this.$render()
     }
     if (!show && showing) {
