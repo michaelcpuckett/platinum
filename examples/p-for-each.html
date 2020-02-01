@@ -1,0 +1,40 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module">
+  import PlatinumElement from '../platinum/index.js'
+
+  window.customElements.define('x-example', class XExample extends PlatinumElement {
+    static get observedAttributes() {
+      return ['items']
+    }
+    handleSubmit(e) {
+      e.preventDefault()
+      if (e.currentTarget.checkValidity()) {
+        const inputEl = e.currentTarget.querySelector('input')
+        this.items = [...this.items, ({ label: inputEl.value })]
+        inputEl.value = ''
+      }
+    }
+    constructor() {
+      super({
+        template: /*html*/`
+          <form onsubmit="return this.getRootNode().host.handleSubmit(event)">
+            <input placeholder="Todo" required />
+            <button>Add</button>
+            <ul>
+              <p-for-each in="items">
+                <template>
+                  <li data-attr-id="data-id">
+                    <slot name="label"></slot>
+                  </li>
+                </template>
+              </p-for-each>
+            </ul>
+          </form>
+        `
+      })
+      this.items = [{ id: 1, label: 'Foo' }, { id: 2, label: 'Bar' }]
+    }
+  })
+</script>
+<x-example></x-example>
