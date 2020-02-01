@@ -80,6 +80,7 @@ export default class PlatinumForEach extends PlatinumShadow {
             }).forEach(node => this.shadowRoot.append(node))
           }
         }
+        // TODO remove event listeners
         $store.addEventListener(`$change_${this.in}`, this.handleChange)
         this.attrs.forEach(attr => {
           $store.addEventListener(`$change_${attr}`, ({ detail: value }) => {
