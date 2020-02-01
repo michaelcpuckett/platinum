@@ -9,11 +9,9 @@ export default class PlatinumForEach extends PlatinumShadow {
   }
   handleChange({ detail: each }) {
     if (Array.isArray(each) && each.length) {
-      console.log(each)
       ;[...this.shadowRoot.children].forEach(node => node.remove())
       each.map(data => {
         data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, this.getRootNode().host[attr] ])) }
-        console.log(data)
         const shadowEl = window.document.createElement('p-shadow')
         const clone = templateContent.cloneNode(true).firstElementChild
         if (clone.tagName.includes('-')) {
@@ -53,7 +51,6 @@ export default class PlatinumForEach extends PlatinumShadow {
             ;[...this.shadowRoot.children].forEach(node => node.remove())
             each.map(data => {
               data = { ...data, ...Object.fromEntries(this.attrs.map(attr => [ attr, $store[attr] ])) }
-              console.log(data)
               const shadowEl = window.document.createElement('p-shadow')
               const clone = templateContent.cloneNode(true).firstElementChild
               if (clone.tagName.includes('-')) {
