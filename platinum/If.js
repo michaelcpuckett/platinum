@@ -18,18 +18,6 @@ export default class PlatinumIf extends HTMLElement {
     const $host = this.currentHost
     const attrs = window.customElements.get($host.tagName.toLowerCase()).observedAttributes || []
     attrs.map(attr => [attr, $host[attr]]).forEach(([key, value]) => {
-      // if (this.element.tagName.includes('-')) {
-      //   Object.assign(this.element, { [key]: value })
-      // }
-      // ;[...this.querySelectorAll([`[slot="${key}"]`])].forEach(node => {
-      //   node.remove()
-      // })
-      // if (value && (typeof value !== 'string' || value.length)) {
-      //   const element = window.document.createElement('data')
-      //   element.setAttribute('slot', key)
-      //   this.append(element)
-      //   this.querySelector(`[slot="${key}"]`).innerHTML = value
-      // }
       ;[...this.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
         const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
         if (value !== undefined && value !== null) {
