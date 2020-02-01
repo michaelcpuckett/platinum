@@ -1,10 +1,11 @@
-export default class PlatinumElement extends HTMLElement {
+import PlatinumShadow from './Shadow.js'
+
+export default class PlatinumElement extends PlatinumShadow {
   constructor({
     template
   }) {
     super()
     this.template = template
-    this.attachShadow({ mode: 'open' })
     const templateEl = window.document.createElement('template')
     templateEl.innerHTML = template
     this.shadowRoot.appendChild(templateEl.content.cloneNode(true))

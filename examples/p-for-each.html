@@ -11,7 +11,7 @@
       e.preventDefault()
       if (e.currentTarget.checkValidity()) {
         const inputEl = e.currentTarget.querySelector('input')
-        this.items = [...this.items, ({ label: inputEl.value })]
+        this.items = [...this.items, ({ id: Date.now(), label: inputEl.value })]
         inputEl.value = ''
       }
     }

@@ -1,4 +1,6 @@
-window.customElements.define('p-if', class PlatinumForEach extends HTMLElement {
+import PlatinumShadow from './Shadow.js'
+
+export default class PlatinumIf extends PlatinumShadow {
   constructor() {
     super()
     this.style.display = 'contents'
@@ -14,12 +16,29 @@ window.customElements.define('p-if', class PlatinumForEach extends HTMLElement {
   get not() {
     return this.getAttribute('not')
   }
+  $render() {
+    const attrs = window.customElements.get(this.currentHost.tagName.toLowerCase()).observedAttributes
+    attrs.map(attr => [attr, this.currentHost[attr]]).forEach(([key, value]) => {
+      ;[...this.querySelectorAll([`[slot="${key}"]`])].forEach(node => {
+        node.remove()
+      })
+      if (value && (typeof value !== 'string' || value.length)) {
+        const element = window.document.createElement('data')
+        element.setAttribute('slot', key)
+        this.append(element)
+        this.querySelector(`[slot="${key}"]`).innerHTML = value
+      }
+      ;[...this.shadowRoot.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
+        node.setAttribute(node.getAttribute(`data-attr-${key}`), value)
+      })
+    })
+  }
   toggle() {
     const showing = this.element.parentNode !== this.fragment
     const show = this.currentHost && (this.condition ? this.currentHost[this.condition] : !this.currentHost[this.not])
     if (show && !showing) {
-      this.appendChild(this.element)
-      this.getRootNode().host.$render() // TODO mutationobserver?
+      this.shadowRoot.append(this.element)
+      this.$render()
     }
     if (!show && showing) {
       this.fragment.append(this.element)
@@ -40,4 +59,4 @@ window.customElements.define('p-if', class PlatinumForEach extends HTMLElement {
       this.currentHost.removeElementListener(`$change_${this.condition || this.not}`, this.boundToggle)
     }
   }
-})
+}
