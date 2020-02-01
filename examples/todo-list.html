@@ -1,0 +1,104 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module">
+  import PlatinumElement from '../platinum/index.js'
+
+  window.customElements.define('x-todo', class XTodo extends PlatinumElement {
+    static get observedAttributes() {
+      return [
+        'id',
+        'done',
+        'title',
+        'className'
+      ]
+    }
+    set $done(done) {
+      this.className = `
+        todo
+        ${done ? 'todo-done' : ''}
+      `
+    }
+    constructor() {
+      super({
+        template: /*html*/`
+          <style>
+            .todo {
+              border: 1px solid;
+              padding: 1em;
+            }
+            .todo-done {
+              background: lightgray;
+            }
+            .todo-done h2 {
+              text-decoration: line-through;
+            }
+          </style>
+          <article data-attr-className="class" data-attr-done="data-done">
+            <h2>
+              <slot name="title"></slot>
+            </h2>
+            <label>
+              Done
+              <input type="checkbox" oninput="this.getRootNode().host.done = !this.getRootNode().host.done">
+            </label>
+          </article>
+        `
+      })
+    }
+  })
+
+  window.customElements.define('x-example', class XExample extends PlatinumElement {
+    static get observedAttributes() {
+      return [
+        'items',
+        'showCleared'
+      ]
+    }
+    handleSubmit(event) {
+      event.preventDefault()
+      const formEl = event.currentTarget
+      if (formEl.checkValidity()) {
+        const inputEl = formEl.querySelector('input')
+        this.items = [...this.items, ({ id: Date.now(), label: inputEl.value })]
+        inputEl.value = ''
+      }
+    }
+    constructor() {
+      super({
+        template: /*html*/`
+          <form onsubmit="return this.getRootNode().host.handleSubmit(event)">
+            <input placeholder="Todo" required />
+            <button>Add</button>
+            <label>
+              Show Cleared
+              <input type="checkbox" oninput="this.getRootNode().host.showCleared = !this.getRootNode().host.showCleared">
+            </label>
+          </article>
+            <ul>
+              <p-for-each in="items" attrs="showCleared">
+                <template>
+                  <p-if condition="showCleared">
+                    <template>
+                      <p-if not="done">
+                        <template>
+                          <x-todo></x-todo>
+                        </template>
+                      </p-if>
+                    </template>
+                  </p-if>
+                  <p-if not="showCleared">
+                    <template>
+                      <x-todo></x-todo>
+                    </template>
+                  </p-if>
+                </template>
+              </p-for-each>
+            </ul>
+          </form>
+        `
+      })
+      this.items = [{ id: 1, title: 'Foo' }, { id: 2, title: 'Bar' }]
+    }
+  })
+</script>
+<x-example></x-example>

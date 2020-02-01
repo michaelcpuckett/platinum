@@ -29,7 +29,12 @@ export default class PlatinumIf extends PlatinumShadow {
         this.querySelector(`[slot="${key}"]`).innerHTML = value
       }
       ;[...this.shadowRoot.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
-        node.setAttribute(node.getAttribute(`data-attr-${key}`), value)
+        const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
+        if (value !== undefined && value !== null) {
+          attrs.forEach(attr => node.setAttribute(attr, value))
+        } else {
+          attrs.forEach(attr => node.removeAttribute(attr))
+        }
       })
     })
   }

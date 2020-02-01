@@ -1,5 +1,4 @@
 import PlatinumShadow from './Shadow.js'
-import PlatinumElement from './Element.js'
 
 export default class PlatinumForEach extends PlatinumShadow {
   constructor() {
@@ -7,6 +6,9 @@ export default class PlatinumForEach extends PlatinumShadow {
   }
   get in() {
     return this.getAttribute('in')
+  }
+  get attrs() {
+    return this.getAttribute('attrs')
   }
   connectedCallback() {
     this.style.display = 'contents'
@@ -21,7 +23,7 @@ export default class PlatinumForEach extends PlatinumShadow {
             each.map(data => {
               const shadowEl = window.document.createElement('p-shadow')
               const clone = templateContent.cloneNode(true).firstElementChild
-              if (clone instanceof PlatinumElement) {
+              if (clone.tagName.includes('-')) {
                 Object.assign(clone, data)
               }
 
@@ -33,7 +35,11 @@ export default class PlatinumForEach extends PlatinumShadow {
 
                 ;[...(clone.matches(`[data-attr-${key}]`) ? [clone] : []), ...clone.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
                   const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
-                  attrs.forEach(attr => node.setAttribute(attr, value))
+                  if (value !== undefined && value !== null) {
+                    attrs.forEach(attr => node.setAttribute(attr, value))
+                  } else {
+                    attrs.forEach(attr => node.removeAttribute(attr))
+                  }
                 })
               })
               shadowEl.shadowRoot.append(clone)
@@ -47,7 +53,7 @@ export default class PlatinumForEach extends PlatinumShadow {
             each.map(data => {
               const shadowEl = window.document.createElement('p-shadow')
               const clone = templateContent.cloneNode(true).firstElementChild
-              if (clone instanceof PlatinumElement) {
+              if (clone.tagName.includes('-')) {
                 Object.assign(clone, data)
               }
               Object.entries(data).forEach(([ key, value ]) => {
@@ -58,7 +64,11 @@ export default class PlatinumForEach extends PlatinumShadow {
 
                 ;[...(clone.matches(`[data-attr-${key}]`) ? [clone] : []), ...clone.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
                   const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
-                  attrs.forEach(attr => node.setAttribute(attr, value))
+                  if (value !== undefined && value !== null) {
+                    attrs.forEach(attr => node.setAttribute(attr, value))
+                  } else {
+                    attrs.forEach(attr => node.removeAttribute(attr))
+                  }
                 })
               })
 

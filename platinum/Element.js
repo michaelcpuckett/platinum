@@ -54,7 +54,12 @@ export default class PlatinumElement extends PlatinumShadow {
       this.querySelector(`[slot="${key}"]`).innerHTML = value
     }
     ;[...this.shadowRoot.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
-      node.setAttribute(node.getAttribute(`data-attr-${key}`), value)
+      const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
+      if (value !== undefined && value !== null) {
+        attrs.forEach(attr => node.setAttribute(attr, value))
+      } else {
+        attrs.forEach(attr => node.removeAttribute(attr))
+      }
     })
   }
   $render() {
@@ -62,7 +67,13 @@ export default class PlatinumElement extends PlatinumShadow {
     if (observedAttributes) {
       observedAttributes.forEach(key => {
         ;[...this.shadowRoot.querySelectorAll([`[data-attr-${key}]`])].forEach(node => {
-          node.setAttribute(node.getAttribute(`data-attr-${key}`), this[key])
+          const value = this[key]
+          const attrs = node.getAttribute(`data-attr-${key}`).split(' ')
+          if (value !== undefined && value !== null) {
+            attrs.forEach(attr => node.setAttribute(attr, value))
+          } else {
+            attrs.forEach(attr => node.removeAttribute(attr))
+          }
         })
       })
     }
