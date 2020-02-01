@@ -17,8 +17,12 @@ export default class PlatinumIf extends PlatinumShadow {
     return this.getAttribute('not')
   }
   $render() {
-    const attrs = window.customElements.get(this.currentHost.tagName.toLowerCase()).observedAttributes
-    attrs.map(attr => [attr, this.currentHost[attr]]).forEach(([key, value]) => {
+    const $host = this.currentHost
+    const attrs = window.customElements.get($host.tagName.toLowerCase()).observedAttributes || []
+    attrs.map(attr => [attr, $host[attr]]).forEach(([key, value]) => {
+      if (this.element.tagName.includes('-')) {
+        Object.assign(this.element, { [key]: value })
+      }
       ;[...this.querySelectorAll([`[slot="${key}"]`])].forEach(node => {
         node.remove()
       })

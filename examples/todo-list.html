@@ -75,18 +75,9 @@
             </label>
           </article>
             <ul>
-              <p-for-each in="items" attrs="showCleared">
+              <p-for-each in="items">
                 <template>
-                  <p-if condition="showCleared">
-                    <template>
-                      <p-if not="done">
-                        <template>
-                          <x-todo></x-todo>
-                        </template>
-                      </p-if>
-                    </template>
-                  </p-if>
-                  <p-if not="showCleared">
+                  <p-if not="done">
                     <template>
                       <x-todo></x-todo>
                     </template>
