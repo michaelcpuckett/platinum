@@ -98,7 +98,7 @@
       const formEl = event.currentTarget
       if (formEl.checkValidity()) {
         const inputEl = formEl.querySelector('input')
-        this.items = [...(this.items || []), { id: Date.now(), title: inputEl.value }]
+        this.items = [...(this.items || []), { key: Date.now(), title: inputEl.value }]
         inputEl.value = ''
       }
     }
