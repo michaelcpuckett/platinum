@@ -1,6 +1,6 @@
 # Platinum
 
-Web Component Framework
+Reactive Web Component Framework
 
 ## Examples
 
