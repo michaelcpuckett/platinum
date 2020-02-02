@@ -1,6 +1,6 @@
 # Platinum
 
-Reactive Framework for Web Components. No Virtual DOM.
+Platinum is a Vue-inspired JavaScript component framework that uses native slots instead of a virtual DOM.
 
 ## Examples
 
