@@ -6,7 +6,7 @@ Web Component Framework
 
 ## For-Each
 
-```
+```js
 import { PlatinumElement } from 'platinum/index.js'
 
 window.customElements.define('x-example', class XExample extends PlatinumElement {
@@ -34,7 +34,7 @@ window.customElements.define('x-example', class XExample extends PlatinumElement
 
 ### If
 
-```
+```js
 import { PlatinumElement } from 'platinum/index.js'
 
 window.customElements.define('x-example', class XExample extends PlatinumElement {
@@ -71,7 +71,7 @@ window.customElements.define('x-example', class XExample extends PlatinumElement
 
 ### Input/Output
 
-```
+```js
 import { PlatinumElement } from 'platinum/index.js'
 window.customElements.define('x-example', class XExample extends PlatinumElement {
   static get observedAttributes() {
