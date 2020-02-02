@@ -1,6 +1,6 @@
 # Platinum
 
-Platinum is a Vue-inspired JavaScript component framework that uses native slots instead of a virtual DOM.
+Platinum is a Vue-inspired JavaScript web component framework that uses Custom Elements (native slots) to achieve reactivity instead of a virtual DOM.
 
 ## Examples
 
