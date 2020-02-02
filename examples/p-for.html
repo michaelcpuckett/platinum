@@ -12,7 +12,7 @@
       const formEl = event.currentTarget
       if (formEl.checkValidity()) {
         const inputEl = formEl.querySelector('input')
-        this.items = [...this.items, ({ id: Date.now(), label: inputEl.value })]
+        this.items = [...this.items, inputEl.value]
         inputEl.value = ''
       }
     }
@@ -25,8 +25,8 @@
             <ul>
               <p-for each="items">
                 <template>
-                  <li data-attr-id="data-id">
-                    <slot name="label"></slot>
+                  <li>
+                    <slot></slot>
                   </li>
                 </template>
               </p-for>
@@ -34,7 +34,7 @@
           </form>
         `
       })
-      this.items = [{ id: 1, label: 'Foo' }, { id: 2, label: 'Bar' }]
+      this.items = ['Foo', 'Bar']
     }
   })
 </script>
