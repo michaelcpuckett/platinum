@@ -1,6 +1,6 @@
 # Platinum
 
-Reactive Web Component Framework
+Reactive Framework for Web Components. No Virtual DOM.
 
 ## Examples
 
