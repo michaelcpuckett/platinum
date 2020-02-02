@@ -20,14 +20,14 @@ window.customElements.define('x-example', class XExample extends PlatinumElement
           <p-for each="items">
             <template>
               <li>
-                <slot name="label"></slot>
+                <slot></slot>
               </li>
             </template>
           </p-for>
         </ul>
       `
     })
-    this.items = [{ label: 'Foo' }, { label: 'Bar' }]
+    this.items = ['Foo', 'Bar']
   }
 })
 ```
